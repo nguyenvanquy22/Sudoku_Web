@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/fontawesome-free-5.15.4-web/css/all.min.css">
+    <title>Sudoku</title>
+</head>
+
+<body class="flex-row">
+
+    <div id="main__container">
+        <div id="header__controls" class="flex-row">
+            <Span id="header__header">SUDOKU</Span>
+        </div>
+
+        <!-- board -->
+        <div id="game">
+            <div id="optional-game" class="flex-row">
+                <div id="left-optional" class="flex-row">
+                    <div class="size flex-row">
+                        <div class="size-label">Size:</div>
+                        <div class="size-option active" data-size="4">4x4</div>
+                        <div class="size-option" data-size="9">9x9</div>
+                    </div>
+                    <div class="level flex-row">
+                        <div class="level-label">Level: </div>
+                        <div class="level-option active" data-level=0>Easy</div>
+                        <div class="level-option" data-level=1>Medium</div>
+                        <div class="level-option" data-level=2>Hard</div>
+                    </div>
+                </div>
+                <div id="right-optional">
+                    <span id="header__submit"><span>Submit</span></span>
+                </div>
+            </div>
+            <div id="main-game" class="flex-row">
+                <div id="board"></div>
+                <div id="controller">
+                    <div class="btn-controls flex-row">
+                        <div class="item-btn btn-undo">
+                            <i class="btn-control fa fa-undo"></i>
+                            <div class="label-control undo">Undo</div>
+                        </div>
+                        <div class="item-btn btn-remove">
+                            <i class="btn-control far fa-trash-alt"></i>
+                            <div class="label-control remove">Remove</div>
+                        </div>
+                        <div class="item-btn btn-hint">
+                            <i class="btn-control far fa-lightbulb"></i>
+                            <div class="label-control hint">Hint</div>
+                        </div>
+                        <div class="item-btn btn-solver">
+                            <i class="btn-control far fa-edit"></i>
+                            <div class="label-control notes">Solver</div>
+                        </div>
+                    </div>
+                    <div class="btn-numbers"></div>
+                    <div class="btn-newGame">New Game</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/384f032731.js" crossorigin="anonymous"></script>
+    <script src="global.js"></script>
+    <script src="combinations.js"></script>
+    <script src="validate.js"></script>
+    <script src="board.js"></script>
+    <script src="view.js"></script>
+    <script src="digger.js"></script>
+    <script src="userActions.js"></script>
+    <script src="solver.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
