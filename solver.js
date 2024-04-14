@@ -40,7 +40,6 @@ class Solver {
         this.started = true
         this.initEmptiesObject()
         this.singlesFinder()
-        //if (!this.isBoardSolved) this.singleBoxesFinder()
         if (!this.isBoardSolved) this.backTracking()
     }
 
@@ -68,9 +67,22 @@ class Solver {
                 }
             }
         }
+        this.initPossibleValuesEmptiesObj()
 
         if (emptyObjectCounter != this.questionsCount) {
             console.log("Error in intEmptiesObject: questionsCount and empty object count doesn't match");
+        }
+    }
+
+    initPossibleValuesEmptiesObj() {
+        for (let idx in this.emptiesObject) {
+            let obj = this.emptiesObject[idx]
+            if (!obj.solved) {
+                let { row, col, box } = obj;
+                let possible = this.checkIfSingle(row, col, box);
+                obj.possibleValues = [...possible];
+                obj.possibleIdx = 0;
+            }
         }
     }
 
@@ -81,52 +93,15 @@ class Solver {
 
         do {
             valuesFilledCounter = 0;
-
             for (let idx in this.emptiesObject) {
                 let obj = this.emptiesObject[idx]
                 if (!obj.solved) {
                     let isSingleFilled = this.findSinglesFromObject(obj);
-                    // if (isSingleFilled == 0) {
-                    //     isSingleFilled = this.checkSingleInBox(obj);
-                    // }
-                    if (isSingleFilled > 0) {
-                        this.singlesObject[valuesFilledCounter] = obj;
-                        valuesFilledCounter++;
+                    if (isSingleFilled == 0) {
+                        isSingleFilled = this.findSinglesFromBox(obj);
                     }
-                }
-            }
-
-            // write values to board
-            if (valuesFilledCounter > 0) {
-                this.solvedCount += valuesFilledCounter;
-                this.writeToBoard(this.singlesObject)
-                view.printBoard(this.board)
-            }
-        } while (valuesFilledCounter > 0);
-
-        // is board solved
-        if (this.solvedCount == this.questionsCount) {
-            this.isBoardSolved = true;
-            console.log("Singles: board solved");
-            //validate the board
-            let isSolutionValid = this.boardValidation()
-            if (isSolutionValid) console.log('Singles: solution is a valid sudoku');
-            alert('Yo!!! Board Solved')
-        }
-        console.log(`Singles: ${this.solvedCount} filled out of ${this.questionsCount}`);
-    }
-
-    singleBoxesFinder() {
-        let valuesFilledCounter;
-
-        do {
-            valuesFilledCounter = 0;
-
-            for (let idx in this.emptiesObject) {
-                let obj = this.emptiesObject[idx]
-                if (!obj.solved) {
-                    let isSingleFilled = this.checkSingleInBox(obj);
                     if (isSingleFilled > 0) {
+                        this.updatePossibleValuesEmptiesObj(obj, isSingleFilled)
                         this.singlesObject[valuesFilledCounter] = obj;
                         valuesFilledCounter++;
                     }
@@ -155,17 +130,13 @@ class Solver {
 
     findSinglesFromObject(obj) {
         let valueFilled = 0;
-        let { row, col, box } = obj;
-        let isSingle = this.checkIfSingle(row, col, box);
-        if (isSingle.length == 1) {
-            valueFilled = isSingle[0];
 
+        if (obj.possibleValues.length == 1) {
+            valueFilled = obj.possibleValues[0];
             obj.isSingle = true;
             obj.solved = true;
-            obj.currentValue = isSingle[0];
+            obj.currentValue = obj.possibleValues[0];
         }
-        obj.possibleValues = [...isSingle];
-        obj.possibleIdx = 0;
 
         return valueFilled;
     }
@@ -183,8 +154,7 @@ class Solver {
         return possible;
     }
 
-    checkSingleInBox(obj) {
-
+    findSinglesFromBox(obj) {
         for (let v1 of obj.possibleValues) {
             let isSingle = true
             for (let idx in this.emptiesObject) {
@@ -204,17 +174,19 @@ class Solver {
                 obj.isSingle = true;
                 obj.solved = true;
                 obj.currentValue = v1;
-                this.updatePossibleValuesEmptiesObj(obj.row, obj.col, v1)
                 return v1;
             }
         }
         return 0;
     }
 
-    updatePossibleValuesEmptiesObj(row, col, value) {
+    updatePossibleValuesEmptiesObj(obj, value) {
         for (let idx in this.emptiesObject) {
             let emptyObj = this.emptiesObject[idx]
-            if (!emptyObj.solved && (row == emptyObj.row || col == emptyObj.col)) {
+            if (!emptyObj.solved &&
+                (obj.row == emptyObj.row
+                    || obj.col == emptyObj.col
+                    || obj.box == emptyObj.box)) {
                 if (emptyObj.possibleValues.includes(value)) {
                     removeInArrayValue(emptyObj.possibleValues, value)
                 }
