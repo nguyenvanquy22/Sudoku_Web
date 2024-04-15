@@ -45,6 +45,7 @@ function initActions() {
 
     let selection;
     let position = [];
+    let filledCells = {};
 
     function emptyItemHandler() {
         let x = this.id[0];
@@ -156,8 +157,16 @@ function initActions() {
     }
 
     function hintHandler() {
-        clearUserInput()
-        console.log('clear')
+        allSolutions = new Solutions(questionBoard)
+        answers = allSolutions.getSolution(filledCells)
+        if (selection = document.querySelector('.selected')) {
+            value = selection.textContent == '' ? 0 : parseInt(selection.textContent);
+            let x = selection.id[0];
+            let y = selection.id[1];
+            selection.textContent = answers[0][x][y];
+            board.board[x][y] = this.textContent == '' ? 0 : answers[0][x][y];
+            position.push({ x, y, value });
+        }
     }
 
     function submitHandler(event) {
