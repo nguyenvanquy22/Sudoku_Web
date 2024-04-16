@@ -78,26 +78,24 @@ class Solutions {
     }
 
     getSolution(filledCells) {
-        if (this.solutions.length == 1) return this.solutions
-        for (let key in filledCells) {
-            let row = key[0];
-            let col = key[1];
-            let checkValues = []
-            for (let i = 0; i < this.solutions.length; i++) {
-                if (filledCells[key] != this.solutions[i][row][col]) {
-                    checkValues.push(i)
-                }
-            }
-            if (checkValues.length == this.solutions.length) {
-                return this.solutions
-            }
-            else {
-                for (let value in checkValues) {
-                    this.solutions.splice(value, 1)
+        let d = Array(this.solutions.length).fill(0)
+        for (let i = 0; i < this.solutions.length; i++) {
+            for (let key in filledCells) {
+                if (filledCells[key] == this.solutions[i][row][col]) {
+                    d[i]++
                 }
             }
         }
-        return this.solutions
+        let max = d[0];
+        let maxIndex = 0;
+        for (let i = 1; i < d.length; i++) {
+            if (arr[i] > max) {
+                max = d[i];
+                maxIndex = i;
+            }
+        }
+        return this.solutions[maxIndex]
+
     }
 
     printSolutions(allSolutions) {

@@ -165,8 +165,8 @@ function initActions() {
             value = selection.textContent == '' ? 0 : parseInt(selection.textContent);
             let x = selection.id[0];
             let y = selection.id[1];
-            selection.textContent = answers[0][x][y];
-            board.board[x][y] = this.textContent == '' ? 0 : answers[0][x][y];
+            selection.textContent = answers[x][y];
+            board.board[x][y] = this.textContent == '' ? 0 : answers[x][y];
             position.push({ x, y, value });
         }
     }
