@@ -12,8 +12,7 @@ class Solutions {
         const emptyCell = this.findEmptyCell();
 
         if (!emptyCell) {
-            // Nếu không còn ô trống nào, thêm bảng đã giải vào mảng giải pháp
-            this.solutions.push(copyBoard(this.board)); // Tạo một bản sao của bảng để tránh thay đổi bảng gốc
+            this.solutions.push(copyBoard(this.board));
             return;
         }
 
@@ -25,7 +24,7 @@ class Solutions {
 
                 this.solve();
 
-                this.board[row][col] = 0; // Reset lại giá trị của ô
+                this.board[row][col] = 0;
             }
         }
     }
@@ -34,15 +33,14 @@ class Solutions {
         for (let row = 0; row < this.board.length; row++) {
             for (let col = 0; col < this.board.length; col++) {
                 if (this.board[row][col] === 0) {
-                    return [row, col]; // Trả về tọa độ của ô trống
+                    return [row, col];
                 }
             }
         }
-        return null; // Nếu không còn ô trống nào
+        return null;
     }
 
     isValidMove(row, col, num) {
-        // Kiểm tra xem num có thỏa mãn điều kiện của Sudoku hay không
         return (
             this.isRowSafe(row, num) &&
             this.isColSafe(col, num) &&
@@ -51,7 +49,6 @@ class Solutions {
     }
 
     isRowSafe(row, num) {
-        // Kiểm tra xem num đã tồn tại trong hàng hay chưa
         for (let col = 0; col < this.board.length; col++) {
             if (this.board[row][col] === num) {
                 return false;
@@ -61,7 +58,6 @@ class Solutions {
     }
 
     isColSafe(col, num) {
-        // Kiểm tra xem num đã tồn tại trong cột hay chưa
         for (let row = 0; row < this.board.length; row++) {
             if (this.board[row][col] === num) {
                 return false;
@@ -71,7 +67,6 @@ class Solutions {
     }
 
     isBoxSafe(startRow, startCol, num) {
-        // Kiểm tra xem num đã tồn tại trong ô Math.sqrt(this.board.length)xMath.sqrt(this.board.length) hay chưa
         for (let row = 0; row < Math.sqrt(this.board.length); row++) {
             for (let col = 0; col < Math.sqrt(this.board.length); col++) {
                 if (this.board[row + startRow][col + startCol] === num) {
@@ -82,24 +77,23 @@ class Solutions {
         return true;
     }
 
-    getSolution(filledCells) { // Đạt
+    getSolution(filledCells) {
         if (this.solutions.length == 1) return this.solutions
         for (let key in filledCells) {
             let row = key[0];
             let col = key[1];
-            let c = []
+            let checkValues = []
             for (let i = 0; i < this.solutions.length; i++) {
                 if (filledCells[key] != this.solutions[i][row][col]) {
-                    c.push(i)
+                    checkValues.push(i)
                 }
             }
-            console.log(c)
-            if (c.length == this.solutions.length) {
+            if (checkValues.length == this.solutions.length) {
                 return this.solutions
             }
             else {
-                for (let t in c) {
-                    this.solutions.splice(t, 1)
+                for (let value in checkValues) {
+                    this.solutions.splice(value, 1)
                 }
             }
         }

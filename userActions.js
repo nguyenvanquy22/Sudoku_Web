@@ -79,6 +79,7 @@ function initActions() {
                 board.board[x][y] = this.textContent == '' ? 0 : parseInt(this.textContent)
             }
             position.push({ x, y, value });
+            filledCells[`${x}${y}`] = board.board[x][y];
         }
     }
 
@@ -101,6 +102,7 @@ function initActions() {
                     board.board[x][y] = k == 46 ? 0 : parseInt(event.key)
                 }
                 position.push({ x, y, value });
+                filledCells[`${x}${y}`] = board.board[x][y];
             }
         }
     }
@@ -157,9 +159,9 @@ function initActions() {
     }
 
     function hintHandler() {
-        allSolutions = new Solutions(questionBoard)
-        answers = allSolutions.getSolution(filledCells)
         if (selection = document.querySelector('.selected')) {
+            allSolutions = new Solutions(questionBoard)
+            answers = allSolutions.getSolution(filledCells)
             value = selection.textContent == '' ? 0 : parseInt(selection.textContent);
             let x = selection.id[0];
             let y = selection.id[1];
