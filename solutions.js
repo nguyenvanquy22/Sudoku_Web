@@ -81,7 +81,7 @@ class Solutions {
         let d = Array(this.solutions.length).fill(0)
         for (let i = 0; i < this.solutions.length; i++) {
             for (let key in filledCells) {
-                if (filledCells[key] == this.solutions[i][row][col]) {
+                if (filledCells[key] == this.solutions[i][key[0]][key[1]]) {
                     d[i]++
                 }
             }
@@ -89,13 +89,12 @@ class Solutions {
         let max = d[0];
         let maxIndex = 0;
         for (let i = 1; i < d.length; i++) {
-            if (arr[i] > max) {
+            if (d[i] > max) {
                 max = d[i];
                 maxIndex = i;
             }
         }
         return this.solutions[maxIndex]
-
     }
 
     printSolutions(allSolutions) {
